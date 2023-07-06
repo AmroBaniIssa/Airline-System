@@ -13,3 +13,4 @@ events.on('Arrived', (payload) => {
     events.emit('flight-arrival',{pilotName:payload.pilotName})
   });
 
+console.log("hi")
