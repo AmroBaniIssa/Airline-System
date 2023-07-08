@@ -1,16 +1,18 @@
 'use strict';
 const events=require('./events');
-require('./manager');
-require('./pilot');
 
-events.on('new-flight', (payload) => {
-    // console.log(`New flight scheduled. Details:`, flightDetails);
-    events.emit('new-flight-Scheduled',{flightDetails:payload})
+
+events.on('new-flight', (flightDetails) => {
+    console.log(`New flight scheduled. Details:`, flightDetails);
+    events.emit('new-flight-Scheduled',flightDetails)
   });
+events.on('took-off',(payload)=>{
+    payload.event='took-off';
+    console.log(payload);
+})
 
 events.on('Arrived', (payload) => {
-    // manager.flightArrived(pilotName);flight-arrival
-    events.emit('flight-arrival',{pilotName:payload.pilotName})
+    payload.event='Arrived';
+    console.log(payload);
+    events.emit('flight-arrival',payload)
   });
-
-console.log("hi")
