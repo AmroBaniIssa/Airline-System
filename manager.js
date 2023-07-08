@@ -1,28 +1,30 @@
-const events = require('./events');
-const uuid = require('uuid');
-const faker = require('@faker-js/faker');
-const name = faker.name;
+const events = require("./events");
+require("./system");
+require("./pilot");
+const uuid = require("uuid");
+const { faker } = require("@faker-js/faker");
 
+setInterval(() => {
+  const Flight = {
+    event: "new-flight",
+    time: faker.date.future({ refDate: "2023-07-08T00:00:00.000Z" }),
+    Details: {
+      airLine: "Royal Jordanian Airlines",
+      destination: faker.location.country(),
+      pilot: faker.person.fullName(),
+      flightID: uuid.v4(),
+    },
+  };
 
-    setInterval(() => {
-      const flightId = uuid.v4();
-      const pilotName = name.firstName();
-      const destination = faker.address.country();
+  console.log(
+    `A new flight with ID ${Flight.Details.flightID} has been scheduled.`
+  );
+  events.emit("new-flight", Flight);
+}, 10000);
 
-      console.log(`A new flight with ID ${flightId} has been scheduled.`);
-
-      const flightDetails = {
-        flightId,
-        pilotName,
-        destination
-      };
-
-      this.emit('new-flight', flightDetails);
-    }, 10000);
-
-
-  events.on('flight-arrival',flightArrived)
-  function flightArrived(pilotName) {
-    console.log(`Appreciation message to pilot ${pilotName}: Thank you for safely landing the flight.`);
-  }
-
+events.on("flight-arrival", flightArrived);
+function flightArrived(payload) {
+  console.log(
+    `Appreciation message to pilot ${payload.Details.pilot}: Thank you for safely landing the flight.`
+  );
+}

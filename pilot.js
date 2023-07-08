@@ -1,19 +1,17 @@
-const events = require('./events');
+const events = require("./events");
 
-
-events.on('new-flight-Scheduled',notifyScheduledFlight);
+events.on("new-flight-Scheduled", notifyScheduledFlight);
 
 function notifyScheduledFlight(flightDetails) {
-    this.flight = flightDetails;
+  const flight = flightDetails;
 
-setTimeout(() => {
-    console.log(`Flight ${this.flight.flightId} is taking off.`);
-    this.emit('took-off', this.flight);
+  setTimeout(() => {
+    console.log(`Flight ${flight.Details.flightID} is taking off.`);
+    events.emit("took-off",flight);
   }, 4000);
 
-setTimeout(() => {
-    console.log(`Flight ${this.flight.flightId} has arrived.`);
-    this.emit('Arrived', this.flight);
+  setTimeout(() => {
+    console.log(`Flight ${flight.Details.flightID} has arrived.`);
+    events.emit("Arrived",flight);
   }, 7000);
-
 }
